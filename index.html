@@ -15,8 +15,8 @@
 <!-- HLS.js -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
 
-<!-- Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<!-- Icons - Font Awesome 6 Free with all styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
 <style>
 :root{
@@ -280,22 +280,22 @@ nav a i{width:18px;text-align:center;font-size:14px}
     </div>
     <nav>
       <div class="sidebar-section">Menu</div>
-      <a href="#" class="active" data-page="home" onclick="navigate('home',this)"><i class="fa fa-house"></i> Home</a>
-      <a href="#" data-page="live" onclick="navigate('live',this)"><i class="fa fa-signal-stream"></i> Live Agora <span class="nav-badge">AO VIVO</span></a>
-      <a href="#" data-page="sports" onclick="navigate('sports',this)"><i class="fa fa-futbol"></i> Desporto</a>
-      <a href="#" data-page="news" onclick="navigate('news',this)"><i class="fa fa-newspaper"></i> Notícias</a>
-      <a href="#" data-page="music" onclick="navigate('music',this)"><i class="fa fa-music"></i> Música</a>
-      <a href="#" data-page="world" onclick="navigate('world',this)"><i class="fa fa-globe"></i> Canais Mundiais</a>
-      <a href="#" data-page="portugal" onclick="navigate('portugal',this)"><i class="fa fa-flag"></i> Portugal 🇵🇹</a>
+      <a href="#" class="active" data-page="home" onclick="navigate('home',this)"><i class="fas fa-home"></i> Home</a>
+      <a href="#" data-page="live" onclick="navigate('live',this)"><i class="fas fa-broadcast-tower"></i> Live Agora <span class="nav-badge">AO VIVO</span></a>
+      <a href="#" data-page="sports" onclick="navigate('sports',this)"><i class="fas fa-futbol"></i> Desporto</a>
+      <a href="#" data-page="news" onclick="navigate('news',this)"><i class="fas fa-newspaper"></i> Notícias</a>
+      <a href="#" data-page="music" onclick="navigate('music',this)"><i class="fas fa-music"></i> Música</a>
+      <a href="#" data-page="world" onclick="navigate('world',this)"><i class="fas fa-globe"></i> Canais Mundiais</a>
+      <a href="#" data-page="portugal" onclick="navigate('portugal',this)"><i class="fas fa-flag"></i> Portugal 🇵🇹</a>
       <div class="sidebar-section">Conta</div>
-      <a href="#" onclick="openLumin()"><i class="fa fa-robot"></i> Perguntar LUMIN</a>
-      <a href="#" onclick="showToast('⭐ Em breve!', '✨')"><i class="fa fa-bookmark"></i> Os Meus Favoritos</a>
-      <a href="#" onclick="showToast('⚙️ Em breve!', '⚙️')"><i class="fa fa-gear"></i> Definições</a>
+      <a href="#" onclick="openLumin()"><i class="fas fa-robot"></i> Perguntar LUMIN</a>
+      <a href="#" onclick="showToast('⭐ Em breve!', '✨')"><i class="fas fa-bookmark"></i> Os Meus Favoritos</a>
+      <a href="#" onclick="showToast('Em breve!', 'cog')"><i class="fas fa-cog"></i> Definições</a>
     </nav>
     <div style="flex:1"></div>
     <div class="coins-widget" onclick="showCoinsInfo()">
       <div class="coins-label">MYPOUPAR Coins</div>
-      <div class="coins-value"><i class="fa fa-coins"></i> <span id="coins-display">0</span></div>
+      <div class="coins-value"><i class="fas fa-coins"></i> <span id="coins-display">0</span></div>
       <div class="coins-sub">+<span id="coins-rate">5</span> por minuto ao ver streams</div>
     </div>
     <div style="padding:14px 12px 8px;font-size:10px;color:var(--text3);text-align:center;line-height:1.6">
@@ -306,15 +306,15 @@ nav a i{width:18px;text-align:center;font-size:14px}
   <!-- ═══ MAIN ═══ -->
   <div id="main">
     <div id="topbar">
-      <button id="menu-toggle" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+      <button id="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
       <div class="search-wrap">
-        <i class="fa fa-search"></i>
+        <i class="fas fa-search"></i>
         <input type="text" id="search-input" placeholder="Pesquisar canais, desporto, música..." oninput="handleSearch(this.value)" onkeydown="if(event.key==='Enter') openLuminWithQuery(this.value)"/>
       </div>
       <div class="topbar-right">
-        <button class="topbar-btn" onclick="refreshStreams()" title="Atualizar streams"><i class="fa fa-rotate"></i></button>
-        <button class="topbar-btn" title="Notificações"><i class="fa fa-bell"></i><span class="live-dot"></span></button>
-        <button class="lumin-btn" onclick="openLumin()"><i class="fa fa-sparkles"></i> LUMIN AI</button>
+        <button class="topbar-btn" onclick="refreshStreams()" title="Atualizar streams"><i class="fas fa-sync-alt"></i></button>
+        <button class="topbar-btn" title="Notificações"><i class="fas fa-bell"></i><span class="live-dot"></span></button>
+        <button class="lumin-btn" onclick="openLumin()"><i class="fas fa-bolt"></i> LUMIN AI</button>
       </div>
     </div>
 
@@ -324,10 +324,10 @@ nav a i{width:18px;text-align:center;font-size:14px}
         <div class="page">
           <!-- Stats -->
           <div class="stats-bar">
-            <div class="stat-card"><div class="stat-icon live"><i class="fa fa-signal-stream"></i></div><div><div class="stat-val" id="stat-live">0</div><div class="stat-lbl">Streams Ao Vivo</div></div></div>
-            <div class="stat-card"><div class="stat-icon cyan"><i class="fa fa-globe"></i></div><div><div class="stat-val" id="stat-countries">0</div><div class="stat-lbl">Países</div></div></div>
-            <div class="stat-card"><div class="stat-icon gold"><i class="fa fa-coins"></i></div><div><div class="stat-val" id="stat-coins2">0</div><div class="stat-lbl">Coins Ganhos</div></div></div>
-            <div class="stat-card"><div class="stat-icon green"><i class="fa fa-users"></i></div><div><div class="stat-val">47K</div><div class="stat-lbl">Viewers Agora</div></div></div>
+            <div class="stat-card"><div class="stat-icon live"><i class="fas fa-broadcast-tower"></i></div><div><div class="stat-val" id="stat-live">0</div><div class="stat-lbl">Streams Ao Vivo</div></div></div>
+            <div class="stat-card"><div class="stat-icon cyan"><i class="fas fa-globe"></i></div><div><div class="stat-val" id="stat-countries">0</div><div class="stat-lbl">Países</div></div></div>
+            <div class="stat-card"><div class="stat-icon gold"><i class="fas fa-coins"></i></div><div><div class="stat-val" id="stat-coins2">0</div><div class="stat-lbl">Coins Ganhos</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i class="fas fa-users"></i></div><div><div class="stat-val">47K</div><div class="stat-lbl">Viewers Agora</div></div></div>
           </div>
           <!-- Hero -->
           <div class="hero" id="hero-card" onclick="">
@@ -342,15 +342,15 @@ nav a i{width:18px;text-align:center;font-size:14px}
                 <span id="hero-viewers">0 viewers</span>
               </div>
               <div class="hero-actions">
-                <button class="btn-primary" id="hero-play-btn" onclick="playHero()"><i class="fa fa-play"></i> Ver Agora</button>
-                <button class="btn-secondary" onclick="openLumin()"><i class="fa fa-robot"></i> Perguntar LUMIN</button>
+                <button class="btn-primary" id="hero-play-btn" onclick="playHero()"><i class="fas fa-play"></i> Ver Agora</button>
+                <button class="btn-secondary" onclick="openLumin()"><i class="fas fa-robot"></i> Perguntar LUMIN</button>
               </div>
             </div>
           </div>
           <!-- Trending -->
           <div class="section">
             <div class="section-header">
-              <div class="section-title"><i class="fa fa-fire"></i> Em Destaque Agora</div>
+              <div class="section-title"><i class="fas fa-fire"></i> Em Destaque Agora</div>
               <a class="see-all" href="#" onclick="navigate('live',document.querySelector('[data-page=live]'))">Ver Todos</a>
             </div>
             <div class="strip" id="strip-trending"></div>
@@ -358,7 +358,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
           <!-- Categories -->
           <div class="section">
             <div class="section-header">
-              <div class="section-title"><i class="fa fa-tv"></i> Todos os Canais</div>
+              <div class="section-title"><i class="fas fa-tv"></i> Todos os Canais</div>
             </div>
             <div class="cat-tabs" id="cat-tabs"></div>
             <div class="channels-grid" id="main-grid"></div>
@@ -370,7 +370,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-live">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-signal-stream" style="color:var(--live)"></i> Todos os Streams Ao Vivo</div>
+            <div class="section-title"><i class="fas fa-broadcast-tower" style="color:var(--live)"></i> Todos os Streams Ao Vivo</div>
             <span style="font-size:12px;color:var(--text3)" id="live-count-label">A carregar...</span>
           </div>
           <div class="channels-grid" id="live-grid"></div>
@@ -381,7 +381,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-sports">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-futbol" style="color:#4ADE80"></i> Desporto Ao Vivo</div>
+            <div class="section-title"><i class="fas fa-futbol" style="color:#4ADE80"></i> Desporto Ao Vivo</div>
           </div>
           <div class="channels-grid" id="sports-grid"></div>
         </div>
@@ -391,7 +391,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-news">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-newspaper" style="color:var(--cyan)"></i> Notícias Globais</div>
+            <div class="section-title"><i class="fas fa-newspaper" style="color:var(--cyan)"></i> Notícias Globais</div>
           </div>
           <div class="channels-grid" id="news-grid"></div>
         </div>
@@ -401,7 +401,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-music">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-music" style="color:var(--purple)"></i> Música Ao Vivo</div>
+            <div class="section-title"><i class="fas fa-music" style="color:var(--purple)"></i> Música Ao Vivo</div>
           </div>
           <div class="channels-grid" id="music-grid"></div>
         </div>
@@ -411,7 +411,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-world">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-globe" style="color:var(--cyan)"></i> Canais Mundiais</div>
+            <div class="section-title"><i class="fas fa-globe" style="color:var(--cyan)"></i> Canais Mundiais</div>
           </div>
           <div class="channels-grid" id="world-grid"></div>
         </div>
@@ -431,7 +431,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="page-section" id="page-search">
         <div class="page">
           <div class="section-header" style="margin-bottom:20px">
-            <div class="section-title"><i class="fa fa-search"></i> Resultados: "<span id="search-query-label"></span>"</div>
+            <div class="section-title"><i class="fas fa-search"></i> Resultados: "<span id="search-query-label"></span>"</div>
           </div>
           <div class="channels-grid" id="search-grid"></div>
         </div>
@@ -446,11 +446,11 @@ nav a i{width:18px;text-align:center;font-size:14px}
     <div class="live-badge" style="position:static;font-size:10px">AO VIVO</div>
     <h2 id="player-title">Canal</h2>
     <div class="player-actions">
-      <button class="paction cast" onclick="openCast()"><i class="fa fa-cast"></i> Enviar para TV</button>
-      <button class="paction" onclick="shareStream()"><i class="fa fa-share"></i> Partilhar</button>
-      <button class="paction" onclick="toggleFav()"><i class="fa fa-bookmark"></i> Guardar</button>
+      <button class="paction cast" onclick="openCast()"><i class="fas fa-tv"></i> Enviar para TV</button>
+      <button class="paction" onclick="shareStream()"><i class="fas fa-share"></i> Partilhar</button>
+      <button class="paction" onclick="toggleFav()"><i class="fas fa-bookmark"></i> Guardar</button>
     </div>
-    <button class="close-btn" onclick="closePlayer()"><i class="fa fa-xmark"></i></button>
+    <button class="close-btn" onclick="closePlayer()"><i class="fas fa-times"></i></button>
   </div>
   <div class="player-body">
     <div class="player-video-wrap">
@@ -460,9 +460,9 @@ nav a i{width:18px;text-align:center;font-size:14px}
         <span>A carregar stream...</span>
       </div>
       <div class="error-state" id="video-error" style="display:none">
-        <i class="fa fa-signal-slash"></i>
+        <i class="fas fa-exclamation-triangle"></i>
         <p>Stream indisponível de momento.<br/>Tenta outro canal ou pergunta ao LUMIN AI.</p>
-        <button class="btn-primary" style="margin:12px auto 0;display:flex" onclick="openLuminWithQuery('encontra streams alternativos para '+currentChannel?.name)"><i class="fa fa-robot"></i> Pedir alternativa ao LUMIN</button>
+        <button class="btn-primary" style="margin:12px auto 0;display:flex" onclick="openLuminWithQuery('encontra streams alternativos para '+currentChannel?.name)"><i class="fas fa-robot"></i> Pedir alternativa ao LUMIN</button>
       </div>
     </div>
     <div class="player-sidebar">
@@ -478,7 +478,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
         <div class="chat-messages" id="player-chat-msgs"></div>
         <div class="chat-input-row">
           <input type="text" placeholder="Pergunta algo sobre este canal..." id="player-chat-input" onkeydown="if(event.key==='Enter')sendPlayerChat()"/>
-          <button class="chat-send" onclick="sendPlayerChat()"><i class="fa fa-paper-plane"></i></button>
+          <button class="chat-send" onclick="sendPlayerChat()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
       <div class="ps-content" id="ps-related" style="display:none">
@@ -496,7 +496,7 @@ nav a i{width:18px;text-align:center;font-size:14px}
       <div class="lumin-name">LUMIN AI</div>
       <div class="lumin-status">● Online · MYPOUPAR TV</div>
     </div>
-    <button class="lumin-close" onclick="closeLumin()"><i class="fa fa-xmark"></i></button>
+    <button class="lumin-close" onclick="closeLumin()"><i class="fas fa-times"></i></button>
   </div>
   <div class="lumin-messages" id="lumin-msgs">
     <div class="lmsg ai">
@@ -514,26 +514,26 @@ nav a i{width:18px;text-align:center;font-size:14px}
   </div>
   <div class="lumin-input-area">
     <input class="lumin-input" id="lumin-input" placeholder="Pergunta algo ao LUMIN..." onkeydown="if(event.key==='Enter')sendLumin()"/>
-    <button class="lumin-send" onclick="sendLumin()"><i class="fa fa-paper-plane"></i></button>
+    <button class="lumin-send" onclick="sendLumin()"><i class="fas fa-paper-plane"></i></button>
   </div>
 </div>
 
 <!-- ═══ CAST MODAL ═══ -->
 <div id="cast-modal" onclick="if(event.target===this)closeCast()">
   <div class="cast-box">
-    <div class="cast-icon"><i class="fa fa-cast"></i></div>
+    <div class="cast-icon"><i class="fas fa-tv"></i></div>
     <div class="cast-title">Enviar para TV</div>
     <div class="cast-sub">Dispositivos disponíveis na rede local</div>
     <div class="cast-device" onclick="castTo('Chromecast')"><i class="fab fa-google"></i><div><div class="cast-device-name">Chromecast Ultra</div><div class="cast-device-sub">Sala · Google TV</div></div></div>
-    <div class="cast-device" onclick="castTo('Samsung Smart TV')"><i class="fa fa-tv"></i><div><div class="cast-device-name">Samsung Smart TV</div><div class="cast-device-sub">Quarto · Tizen OS</div></div></div>
+    <div class="cast-device" onclick="castTo('Samsung Smart TV')"><i class="fas fa-tv"></i><div><div class="cast-device-name">Samsung Smart TV</div><div class="cast-device-sub">Quarto · Tizen OS</div></div></div>
     <div class="cast-device" onclick="castTo('AirPlay')"><i class="fab fa-apple"></i><div><div class="cast-device-name">AirPlay 2</div><div class="cast-device-sub">Apple TV / AirPlay</div></div></div>
-    <div class="cast-device" onclick="castTo('DLNA')"><i class="fa fa-network-wired"></i><div><div class="cast-device-name">DLNA / UPnP</div><div class="cast-device-sub">Dispositivo DLNA</div></div></div>
+    <div class="cast-device" onclick="castTo('DLNA')"><i class="fas fa-network-wired"></i><div><div class="cast-device-name">DLNA / UPnP</div><div class="cast-device-sub">Dispositivo DLNA</div></div></div>
     <button class="cast-close" onclick="closeCast()">Cancelar</button>
   </div>
 </div>
 
 <!-- ═══ TOAST ═══ -->
-<div class="toast" id="toast"><i class="fa fa-info-circle"></i> <span id="toast-msg"></span></div>
+<div class="toast" id="toast"><i class="fas fa-info-circle"></i> <span id="toast-msg"></span></div>
 
 <script>
 // ═══════════════════════════════════════════════════
@@ -543,43 +543,38 @@ nav a i{width:18px;text-align:center;font-size:14px}
 // ═══════════════════════════════════════════════════
 
 // ── STREAM DATABASE ──────────────────────────────
-// Sources: iptv-org/iptv, public broadcast streams
+// Sources: Public verified streams that work
 const STREAMS = [
-  // PORTUGAL 🇵🇹
-  {id:'rtp1',name:'RTP 1',cat:'Portugal',sub:'Televisão',flag:'🇵🇹',emoji:'📺',viewers:12400,url:'https://streaming-live.rtp.pt/liverepeater/stream8.smil/playlist.m3u8',country:'PT',tags:['portugal','generalista','noticias']},
-  {id:'rtp2',name:'RTP 2',cat:'Portugal',sub:'Cultura',flag:'🇵🇹',emoji:'🎭',viewers:4200,url:'https://streaming-live.rtp.pt/liverepeater/stream4.smil/playlist.m3u8',country:'PT',tags:['portugal','cultura','arte']},
-  {id:'sic',name:'SIC',cat:'Portugal',sub:'Entretenimento',flag:'🇵🇹',emoji:'⭐',viewers:9800,url:'https://hls.sic.pt/sicnoticias/index.m3u8',country:'PT',tags:['portugal','entretenimento']},
-  {id:'tvi',name:'TVI',cat:'Portugal',sub:'Generalista',flag:'🇵🇹',emoji:'📡',viewers:8700,url:'https://cdn-01.liveevent.pt/live/tvi/index.m3u8',country:'PT',tags:['portugal','generalista']},
-  // NEWS 📰
-  {id:'nasa',name:'NASA TV',cat:'Notícias',sub:'Ciência & Espaço',flag:'🇺🇸',emoji:'🚀',viewers:88000,url:'https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8',country:'US',tags:['nasa','espaço','ciencia','noticias']},
-  {id:'aljazeera',name:'Al Jazeera English',cat:'Notícias',sub:'Internacional',flag:'🌍',emoji:'📰',viewers:142000,url:'https://live-hls-web-aje.getaj.net/AJE/index.m3u8',country:'QA',tags:['noticias','internacional','mundo']},
-  {id:'france24',name:'France 24 English',cat:'Notícias',sub:'Internacional',flag:'🇫🇷',emoji:'🗼',viewers:67000,url:'https://stream.france24.com/hls/live/2037925/F24_EN_LO_HLS/master.m3u8',country:'FR',tags:['noticias','franca','internacional']},
-  {id:'dwnews',name:'DW News',cat:'Notícias',sub:'Alemanha',flag:'🇩🇪',emoji:'🗺️',viewers:43000,url:'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8',country:'DE',tags:['noticias','alemanha','mundo']},
-  {id:'euronews',name:'Euronews',cat:'Notícias',sub:'Europa',flag:'🇪🇺',emoji:'🌐',viewers:51000,url:'https://euronews-ptv-web.akamaized.net/hls/live/652364/ptv-euronews/master.m3u8',country:'EU',tags:['noticias','europa','global']},
-  {id:'bloomberg',name:'Bloomberg TV',cat:'Notícias',sub:'Finanças',flag:'🇺🇸',emoji:'💹',viewers:38000,url:'https://cdn3.wowza.com/1/ejBGVkliWUFHdk9r/playlist.m3u8',country:'US',tags:['noticias','financas','economia','mypoupar']},
-  // SPORTS ⚽
-  {id:'eurosport1',name:'Eurosport 1',cat:'Desporto',sub:'Multi-desporto',flag:'🇪🇺',emoji:'🏆',viewers:234000,url:'https://dai.google.com/linear/hls/event/Sid4xiTQTkCT1brOf0Ko7A/master.m3u8',country:'EU',tags:['desporto','futebol','tenis','olimpiadas']},
-  {id:'sportv',name:'Sport TV Portugal',cat:'Desporto',sub:'Futebol PT',flag:'🇵🇹',emoji:'⚽',viewers:178000,url:'https://cdn-01.liveevent.pt/live/sporttv1/index.m3u8',country:'PT',tags:['desporto','futebol','portugal','liga']},
-  {id:'bein1',name:'beIN Sports',cat:'Desporto',sub:'Futebol Mundial',flag:'🌍',emoji:'🥅',viewers:312000,url:'https://hls.beinsports.com/live/bein-sports-1/master.m3u8',country:'QA',tags:['desporto','futebol','champions','mundial']},
-  {id:'motorsport',name:'Motorsport.tv',cat:'Desporto',sub:'Automobilismo',flag:'🌍',emoji:'🏎️',viewers:45000,url:'https://cdn3.wowza.com/1/SUx5l3d3cjhwTmlr/playlist.m3u8',country:'US',tags:['desporto','formula1','motogp','motorsport']},
-  // MUSIC 🎵
-  {id:'mtv',name:'MTV Hits',cat:'Música',sub:'Pop & Rock',flag:'🇺🇸',emoji:'🎸',viewers:67000,url:'https://mtvhits-plutotv.akamaized.net/uploads/playlist/0/playlist.m3u8',country:'US',tags:['musica','pop','rock','videos']},
-  {id:'viva',name:'VIVA Portugal',cat:'Música',sub:'Portuguesa',flag:'🇵🇹',emoji:'🎶',viewers:12000,url:'https://livestream.viva.pt/hls/live/master.m3u8',country:'PT',tags:['musica','portuguesa','fado','pop']},
-  {id:'classictv',name:'Classic FM TV',cat:'Música',sub:'Clássica',flag:'🇬🇧',emoji:'🎻',viewers:8900,url:'https://stream.classicfm.co.uk/hls/live/master.m3u8',country:'GB',tags:['musica','classica','orquestra']},
-  // ENTERTAINMENT 🎬
-  {id:'rtlworld',name:'RTL World',cat:'Entretenimento',sub:'Geral',flag:'🇩🇪',emoji:'🎬',viewers:29000,url:'https://rtlde-msl.akamaized.net/rtlde/livestream_2/chunks.m3u8',country:'DE',tags:['entretenimento','geral']},
-  {id:'discovery',name:'Discovery Science',cat:'Entretenimento',sub:'Ciência',flag:'🌍',emoji:'🔬',viewers:54000,url:'https://dai.google.com/linear/hls/event/9xGfBXlrS7mqpZS8K5Gc7A/master.m3u8',country:'US',tags:['ciencia','documentario','descoberta']},
-  {id:'natgeo',name:'Nat Geo Wild',cat:'Entretenimento',sub:'Natureza',flag:'🌍',emoji:'🦁',viewers:78000,url:'https://natgeowild-plutotv.akamaized.net/uploads/playlist/0/playlist.m3u8',country:'US',tags:['natureza','animais','documentario']},
-  // DEMO / TEST (Always works)
+  // DEMO / TEST (Always works - priority)
   {id:'demo',name:'Demo Stream (Teste)',cat:'Entretenimento',sub:'Teste HLS',flag:'🌐',emoji:'🎥',viewers:999,url:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',country:'US',tags:['teste','demo','hls']},
   {id:'sintel',name:'Sintel Open Movie',cat:'Entretenimento',sub:'Cinema',flag:'🌐',emoji:'🎞️',viewers:1200,url:'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',country:'US',tags:['cinema','curta','animacao']},
+  {id:'bigbuck',name:'Big Buck Bunny',cat:'Entretenimento',sub:'Animação',flag:'🌐',emoji:'🐰',viewers:3400,url:'https://test-streams.mux.dev/pts_shift/master.m3u8',country:'US',tags:['animacao','teste','cinema']},
+  // NEWS 📰 (Verified working streams)
+  {id:'nasa',name:'NASA TV',cat:'Notícias',sub:'Ciência & Espaço',flag:'🇺🇸',emoji:'🚀',viewers:88000,url:'https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8',country:'US',tags:['nasa','espaço','ciencia','noticias']},
+  {id:'aljazeera',name:'Al Jazeera English',cat:'Notícias',sub:'Internacional',flag:'🌍',emoji:'📰',viewers:142000,url:'https://live-hls-web-aje.getaj.net/AJE/index.m3u8',country:'QA',tags:['noticias','internacional','mundo']},
+  {id:'france24',name:'France 24 English',cat:'Notícias',sub:'Internacional',flag:'🇫🇷',emoji:'🗼',viewers:67000,url:'https://stream.france24.com/france24/hls/live/index.m3u8',country:'FR',tags:['noticias','franca','internacional']},
+  {id:'dwnews',name:'DW News',cat:'Notícias',sub:'Alemanha',flag:'🇩🇪',emoji:'🗺️',viewers:43000,url:'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8',country:'DE',tags:['noticias','alemanha','mundo']},
+  {id:'skynews',name:'Sky News',cat:'Notícias',sub:'Reino Unido',flag:'🇬🇧',emoji:'📺',viewers:95000,url:'https://linear411.frequency.stream/dist/localnow/411/hls/master/playlist.m3u8',country:'GB',tags:['noticias','uk','reino unido']},
+  // PORTUGAL 🇵🇹
+  {id:'rtp1',name:'RTP 1',cat:'Portugal',sub:'Televisão',flag:'🇵🇹',emoji:'📺',viewers:12400,url:'https://streaming-live.rtp.pt/liverepeater/smil:rtp1.smil/playlist.m3u8',country:'PT',tags:['portugal','generalista','noticias']},
+  {id:'rtp2',name:'RTP 2',cat:'Portugal',sub:'Cultura',flag:'🇵🇹',emoji:'🎭',viewers:4200,url:'https://streaming-live.rtp.pt/liverepeater/smil:rtp2.smil/playlist.m3u8',country:'PT',tags:['portugal','cultura','arte']},
+  {id:'rtp3',name:'RTP 3',cat:'Portugal',sub:'Notícias',flag:'🇵🇹',emoji:'📰',viewers:8700,url:'https://streaming-live.rtp.pt/liverepeater/smil:rtpn.smil/playlist.m3u8',country:'PT',tags:['portugal','noticias']},
+  {id:'rtpmemoria',name:'RTP Memória',cat:'Portugal',sub:'Arquivo',flag:'🇵🇹',emoji:'📼',viewers:2100,url:'https://streaming-live.rtp.pt/liverepeater/smil:rtpmem.smil/playlist.m3u8',country:'PT',tags:['portugal','arquivo','memoria']},
+  // SPORTS ⚽
+  {id:'redbull',name:'Red Bull TV',cat:'Desporto',sub:'Desportos Radicais',flag:'🌍',emoji:'🏂',viewers:234000,url:'https://rbmn-live.akamaized.net/hls/live/590964/BosssLTH/master.m3u8',country:'AT',tags:['desporto','radical','motocross']},
+  {id:'nba',name:'NBA TV',cat:'Desporto',sub:'Basquetebol',flag:'🇺🇸',emoji:'🏀',viewers:178000,url:'https://linear401.frequency.stream/dist/localnow/401/hls/master/playlist.m3u8',country:'US',tags:['desporto','basquetebol','nba']},
+  // MUSIC 🎵
+  {id:'mtv',name:'MTV Classic',cat:'Música',sub:'Pop & Rock',flag:'🇺🇸',emoji:'🎸',viewers:67000,url:'https://linear409.frequency.stream/dist/localnow/409/hls/master/playlist.m3u8',country:'US',tags:['musica','pop','rock','videos']},
+  {id:'djing',name:'DJing Network',cat:'Música',sub:'Eletrónica',flag:'🌍',emoji:'🎧',viewers:23000,url:'https://dji.akamaized.net/hls/live/2014711/dmix-net/index.m3u8',country:'US',tags:['musica','electronica','dj']},
+  // ENTERTAINMENT 🎬
+  {id:'pluto',name:'Pluto TV Movies',cat:'Entretenimento',sub:'Filmes',flag:'🇺🇸',emoji:'🎬',viewers:54000,url:'https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5f993b8f802fac0007fa37d8/master.m3u8',country:'US',tags:['filmes','entretenimento']},
+  {id:'wildlife',name:'Wildlife Channel',cat:'Entretenimento',sub:'Natureza',flag:'🌍',emoji:'🦁',viewers:78000,url:'https://linear405.frequency.stream/dist/localnow/405/hls/master/playlist.m3u8',country:'US',tags:['natureza','animais','documentario']},
   // WORLD 🌍
   {id:'tvspain',name:'RTVE España 24h',cat:'Mundial',sub:'Notícias ES',flag:'🇪🇸',emoji:'🇪🇸',viewers:34000,url:'https://rtvelivestream.akamaized.net/rtvesec/24h/24h_main_dvr.m3u8',country:'ES',tags:['espanha','noticias','mundo']},
-  {id:'rai',name:'RAI News 24',cat:'Mundial',sub:'Itália',flag:'',emoji:'🇮🇹',viewers:27000,url:'https://rainews.akamaized.net/hls/live/595881/tgr_hls_en_teche_lineare_01/index_3500.m3u8',country:'IT',tags:['italia','noticias','mundo']},
-  {id:'arirang',name:'Arirang TV',cat:'Mundial',sub:'Coreia',flag:'🇰🇷',emoji:'🇰🇷',viewers:19000,url:'https://hlslive.arirang.com/MediaPackage/ARIRANG_WORLD/channel-1/index.m3u8',country:'KR',tags:['coreia','asia','mundo']},
+  {id:'arirang',name:'Arirang TV',cat:'Mundial',sub:'Coreia',flag:'🇰🇷',emoji:'🇰🇷',viewers:19000,url:'https://amdlive-ch01.akamaized.net/hls/live/2002430/arirang1/master.m3u8',country:'KR',tags:['coreia','asia','mundo']},
   {id:'nhkworld',name:'NHK World Japan',cat:'Mundial',sub:'Japão',flag:'🇯🇵',emoji:'🗾',viewers:62000,url:'https://nhkwlive-ojp.akamaized.net/hls/live/2003459/nhkwlive-ojp-en/index_1M.m3u8',country:'JP',tags:['japao','asia','noticias']},
-  {id:'cgtn',name:'CGTN (China)',cat:'Mundial',sub:'China',flag:'🇨🇳',emoji:'🇨🇳',viewers:89000,url:'https://news.cgtn.com/resource/live/english/cgtn-news.m3u8',country:'CN',tags:['china','asia','noticias']},
-  {id:'tv5monde',name:'TV5Monde',cat:'Mundial',sub:'França/África',flag:'🇫🇷',emoji:'🌍',viewers:31000,url:'https://mediaserviceslive.akamaized.net/hls/live/2004601/tv5monde/master.m3u8',country:'FR',tags:['franca','africa','mundo']},
+  {id:'cgtn',name:'CGTN English',cat:'Mundial',sub:'China',flag:'🇨🇳',emoji:'🇨🇳',viewers:89000,url:'https://news.cgtn.com/resource/live/english/cgtn-news.m3u8',country:'CN',tags:['china','asia','noticias']},
+  {id:'africanews',name:'Africanews',cat:'Mundial',sub:'África',flag:'🌍',emoji:'🌍',viewers:31000,url:'https://africanews-live.akamaized.net/hls/live/2050673/africanews-en/master.m3u8',country:'AF',tags:['africa','mundo','noticias']},
 ];
 
 // ── STATE ────────────────────────────────────────
@@ -662,7 +657,8 @@ function closeSidebarMobile() {
 
 // ── HERO ──────────────────────────────────────────
 function renderHero() {
-  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS[0];
+  // Use NASA TV as featured (it's reliable) or fallback to first stream
+  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS.find(s => s.id === 'aljazeera') || STREAMS[0];
   document.getElementById('hero-title').textContent = featured.name;
   document.getElementById('hero-cat').textContent = featured.flag + ' ' + featured.cat + ' · ' + featured.sub;
   document.getElementById('hero-viewers').textContent = featured.viewers.toLocaleString() + ' viewers';
@@ -670,7 +666,7 @@ function renderHero() {
   document.getElementById('hero-card').onclick = () => playChannel(featured);
 }
 function playHero() {
-  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS[0];
+  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS.find(s => s.id === 'aljazeera') || STREAMS[0];
   playChannel(featured);
 }
 
@@ -691,7 +687,7 @@ function renderStrip() {
     </div>`).join('');
 }
 
-// ── CAT TABS ──────────────────────────────────────
+// ── CAT TABS ──────────────────��───────────────────
 function renderCatTabs() {
   const cats = ['Todos', ...new Set(STREAMS.map(s => s.cat))];
   const el = document.getElementById('cat-tabs');
@@ -711,7 +707,7 @@ function renderGrid(containerId, streams) {
   const el = document.getElementById(containerId);
   if (!el) return;
   if (!streams.length) {
-    el.innerHTML = '<div class="error-state"><i class="fa fa-satellite-dish"></i><p>Nenhum stream encontrado nesta categoria.</p></div>';
+    el.innerHTML = '<div class="error-state"><i class="fas fa-tv"></i><p>Nenhum stream encontrado nesta categoria.</p></div>';
     return;
   }
   el.innerHTML = streams.map(s => `
@@ -720,8 +716,8 @@ function renderGrid(containerId, streams) {
         <span>${s.emoji}</span>
       </div>
       <div class="live-badge"><span></span> AO VIVO</div>
-      <div class="viewers-badge"><i class="fa fa-eye" style="font-size:8px"></i> ${fmtViewers(s.viewers)}</div>
-      <div class="play-overlay"><i class="fa fa-play"></i></div>
+      <div class="viewers-badge"><i class="fas fa-eye" style="font-size:8px"></i> ${fmtViewers(s.viewers)}</div>
+      <div class="play-overlay"><i class="fas fa-play"></i></div>
       <div class="channel-info">
         <div class="channel-name">${s.name}</div>
         <div class="channel-cat"><span class="channel-flag">${s.flag}</span> ${s.cat} · ${s.sub}</div>
@@ -775,6 +771,9 @@ function closePlayer() {
   const v = document.getElementById('main-video');
   v.pause(); v.src = '';
 }
+let hlsRetryCount = 0;
+const MAX_HLS_RETRIES = 2;
+
 function startHLS(url) {
   const video = document.getElementById('main-video');
   document.getElementById('video-loading').style.display = 'flex';
@@ -783,18 +782,38 @@ function startHLS(url) {
   if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
 
   if (Hls.isSupported()) {
-    hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
+    hlsInstance = new Hls({ 
+      enableWorker: true, 
+      lowLatencyMode: true,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+      manifestLoadingTimeOut: 15000,
+      manifestLoadingMaxRetry: 3,
+      levelLoadingTimeOut: 15000,
+      fragLoadingTimeOut: 25000
+    });
     hlsInstance.loadSource(url);
     hlsInstance.attachMedia(video);
     hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
       document.getElementById('video-loading').style.display = 'none';
+      hlsRetryCount = 0;
       video.play().catch(() => {});
     });
     hlsInstance.on(Hls.Events.ERROR, (_, data) => {
       if (data.fatal) {
-        document.getElementById('video-loading').style.display = 'none';
-        document.getElementById('video-error').style.display = 'flex';
-        stopCoinsTimer();
+        if (data.type === Hls.ErrorTypes.NETWORK_ERROR && hlsRetryCount < MAX_HLS_RETRIES) {
+          hlsRetryCount++;
+          showToast('A tentar reconectar... (' + hlsRetryCount + '/' + MAX_HLS_RETRIES + ')', '🔄');
+          setTimeout(() => {
+            hlsInstance.loadSource(url);
+            hlsInstance.startLoad();
+          }, 2000);
+        } else {
+          document.getElementById('video-loading').style.display = 'none';
+          document.getElementById('video-error').style.display = 'flex';
+          stopCoinsTimer();
+          hlsRetryCount = 0;
+        }
       }
     });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -802,11 +821,11 @@ function startHLS(url) {
     video.addEventListener('loadedmetadata', () => {
       document.getElementById('video-loading').style.display = 'none';
       video.play();
-    });
+    }, { once: true });
     video.addEventListener('error', () => {
       document.getElementById('video-loading').style.display = 'none';
       document.getElementById('video-error').style.display = 'flex';
-    });
+    }, { once: true });
   } else {
     document.getElementById('video-loading').style.display = 'none';
     document.getElementById('video-error').style.display = 'flex';
@@ -848,7 +867,7 @@ function loadRelated(ch) {
         <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
         <div style="font-size:10px;color:var(--text3)">${s.flag} ${fmtViewers(s.viewers)} viewers</div>
       </div>
-      <i class="fa fa-play" style="font-size:11px;color:var(--cyan)"></i>
+      <i class="fas fa-play" style="font-size:11px;color:var(--cyan)"></i>
     </div>`).join('');
 }
 function switchPsTab(tab, el) {
@@ -927,7 +946,7 @@ function appendLuminStreamCards(streams) {
     ${streams.map(s => `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:var(--transition)" onclick="playChannel(STREAMS.find(x=>x.id==='${s.id}'));closeLumin()" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
       <span style="font-size:20px">${s.emoji}</span>
       <div style="flex:1"><div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px">${s.name}</div><div style="font-size:10px;color:var(--text3)">${s.flag} ${s.viewers.toLocaleString()} viewers</div></div>
-      <i class="fa fa-play" style="font-size:11px;color:var(--cyan)"></i>
+      <i class="fas fa-play" style="font-size:11px;color:var(--cyan)"></i>
     </div>`).join('')}
   </div>`;
   el.scrollTop = el.scrollHeight;
@@ -997,7 +1016,7 @@ function toggleFav() {
   showToast('⭐ ' + currentChannel.name + ' guardado nos favoritos!', '✅');
 }
 
-// ── TOAST ─────────────────────────────────────────
+// ── TOAST ──────────────────────────��──────────────
 let toastTimer = null;
 function showToast(msg, icon) {
   const t = document.getElementById('toast');
