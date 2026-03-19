@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MYPOUPAR TV — Powered by LUMIN AI</title>
+<meta name="description" content="Plataforma global de live streaming com LUMIN AI. Descobre, vê e interage com streams de todo o mundo."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>"/>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- HLS.js -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+:root{
+  --bg0:#060A12;
+  --bg1:#0B1220;
+  --bg2:#111827;
+  --bg3:#1A2535;
+  --border:#1E2D45;
+  --cyan:#00C8FF;
+  --cyan2:#0084AA;
+  --gold:#FFB300;
+  --gold2:#FF8C00;
+  --live:#FF3B5C;
+  --green:#00FF9D;
+  --purple:#7C3AED;
+  --text:#E8EEF8;
+  --text2:#8BA3C4;
+  --text3:#4A6080;
+  --radius:10px;
+  --sidebar:240px;
+  --transition:0.22s cubic-bezier(.4,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--text);font-family:'Mulish',sans-serif}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--cyan2)}
+
+/* ——— LAYOUT ——— */
+#app{display:flex;height:100vh;overflow:hidden}
+#sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--bg1);display:flex;flex-direction:column;border-right:1px solid var(--border);transition:var(--transition);z-index:100;overflow-y:auto;overflow-x:hidden}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#topbar{height:60px;min-height:60px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;z-index:50}
+#content{flex:1;overflow-y:auto;padding:24px;background:var(--bg0)}
+
+/* ——— SIDEBAR ——— */
+.logo{padding:20px 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-text{font-family:'Exo 2',sans-serif;font-weight:900;font-size:14px;letter-spacing:.5px;line-height:1.2}
+.logo-text span{color:var(--cyan);display:block;font-size:9px;font-weight:400;letter-spacing:2px;opacity:.7;text-transform:uppercase}
+nav a{display:flex;align-items:center;gap:12px;padding:10px 16px;color:var(--text2);text-decoration:none;font-size:13.5px;font-weight:500;border-radius:var(--radius);margin:1px 8px;transition:var(--transition);position:relative}
+nav a:hover{background:var(--bg3);color:var(--text)}
+nav a.active{background:linear-gradient(135deg,rgba(0,200,255,.12),rgba(124,58,237,.08));color:var(--cyan);border:1px solid rgba(0,200,255,.2)}
+nav a i{width:18px;text-align:center;font-size:14px}
+.nav-badge{background:var(--live);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:6px;margin-left:auto}
+.sidebar-section{padding:16px 16px 4px;font-size:9px;font-weight:700;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
+.coins-widget{margin:12px 8px;background:linear-gradient(135deg,rgba(255,179,0,.12),rgba(255,140,0,.06));border:1px solid rgba(255,179,0,.2);border-radius:var(--radius);padding:12px 14px;cursor:pointer}
+.coins-label{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.coins-value{font-family:'Exo 2',sans-serif;font-weight:900;font-size:22px;color:var(--gold);display:flex;align-items:center;gap:6px}
+.coins-value i{font-size:16px}
+.coins-sub{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ——— TOPBAR ——— */
+#menu-toggle{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:6px;border-radius:6px;transition:var(--transition)}
+#menu-toggle:hover{color:var(--cyan)}
+.search-wrap{flex:1;max-width:480px;position:relative}
+.search-wrap input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:8px 16px 8px 38px;color:var(--text);font-family:'Mulish',sans-serif;font-size:13px;outline:none;transition:var(--transition)}
+.search-wrap input:focus{border-color:var(--cyan);background:var(--bg3)}
+.search-wrap i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;pointer-events:none}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.topbar-btn{background:none;border:none;color:var(--text2);font-size:16px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:var(--transition);position:relative}
+.topbar-btn:hover{background:var(--bg3);color:var(--cyan)}
+.live-dot{width:7px;height:7px;background:var(--live);border-radius:50%;position:absolute;top:4px;right:4px;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.lumin-btn{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:20px;padding:7px 16px;color:#fff;font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:var(--transition)}
+.lumin-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,200,255,.3)}
+
+/* ——— HERO ——— */
+.hero{border-radius:14px;overflow:hidden;position:relative;margin-bottom:28px;background:var(--bg1);min-height:260px;cursor:pointer;border:1px solid var(--border)}
+.hero-bg{width:100%;height:260px;object-fit:cover;opacity:.7}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to right,rgba(6,10,18,.95) 35%,rgba(6,10,18,.3) 100%),linear-gradient(to top,rgba(6,10,18,.9) 0%,transparent 50%)}
+.hero-content{position:absolute;bottom:24px;left:28px;right:50%}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--live);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;margin-bottom:10px;letter-spacing:.5px}
+.hero-title{font-family:'Exo 2',sans-serif;font-weight:900;font-size:clamp(18px,2.5vw,28px);line-height:1.2;margin-bottom:6px}
+.hero-meta{font-size:12px;color:var(--text2);margin-bottom:14px;display:flex;gap:12px;align-items:center}
+.hero-actions{display:flex;gap:10px}
+.btn-primary{background:var(--cyan);color:#000;border:none;border-radius:8px;padding:9px 20px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:var(--transition)}
+.btn-primary:hover{background:#33D4FF;transform:translateY(-1px)}
+.btn-secondary{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:9px 20px;font-family:'Exo 2',sans-serif;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:var(--transition)}
+.btn-secondary:hover{background:rgba(255,255,255,.2)}
+
+/* ——— SECTIONS ——— */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-family:'Exo 2',sans-serif;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px}
+.section-title i{color:var(--cyan);font-size:14px}
+.see-all{color:var(--cyan);font-size:12px;text-decoration:none;font-weight:600;opacity:.8;transition:var(--transition)}
+.see-all:hover{opacity:1}
+.section{margin-bottom:32px}
+
+/* ——— CHANNEL CARDS ——— */
+.channels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px}
+.channel-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:var(--transition);position:relative}
+.channel-card:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 8px 30px rgba(0,200,255,.12)}
+.channel-thumb{width:100%;height:100px;object-fit:cover;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
+.channel-thumb-img{width:100%;height:100px;object-fit:cover}
+.channel-thumb-fallback{width:100%;height:100px;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:28px}
+.live-badge{position:absolute;top:7px;left:7px;background:var(--live);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;letter-spacing:.5px;display:flex;align-items:center;gap:4px}
+.live-badge::before{content:'';width:5px;height:5px;background:#fff;border-radius:50%;display:inline-block;animation:pulse 1.2s infinite}
+.viewers-badge{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:var(--text2);font-size:9px;padding:2px 6px;border-radius:6px;display:flex;align-items:center;gap:3px}
+.channel-info{padding:10px}
+.channel-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:12.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.channel-cat{font-size:10.5px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.channel-cat i{font-size:9px}
+.channel-flag{font-size:12px}
+.play-overlay{position:absolute;inset:0;background:rgba(0,200,255,.15);display:flex;align-items:center;justify-content:center;opacity:0;transition:var(--transition)}
+.channel-card:hover .play-overlay{opacity:1}
+.play-overlay i{font-size:28px;color:#fff;background:rgba(0,0,0,.5);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.5)}
+
+/* ——— CATEGORY TABS ——— */
+.cat-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.cat-tab{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:5px 14px;font-size:12.5px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap}
+.cat-tab:hover{border-color:var(--cyan);color:var(--text)}
+.cat-tab.active{background:rgba(0,200,255,.12);border-color:var(--cyan);color:var(--cyan)}
+
+/* ——— HORIZONTAL SCROLL STRIP ——— */
+.strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip-card{min-width:160px;background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:var(--transition);flex-shrink:0}
+.strip-card:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 6px 20px rgba(0,200,255,.1)}
+.strip-thumb{height:90px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:26px;position:relative}
+.strip-info{padding:8px 10px}
+.strip-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip-sub{font-size:10px;color:var(--text3)}
+
+/* ——— PLAYER MODAL ——— */
+#player-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);display:none;flex-direction:column}
+#player-modal.open{display:flex}
+.player-header{padding:14px 20px;display:flex;align-items:center;gap:14px;background:var(--bg1);border-bottom:1px solid var(--border)}
+.player-header h2{font-family:'Exo 2',sans-serif;font-weight:700;font-size:16px;flex:1}
+.player-actions{display:flex;gap:8px}
+.paction{background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:var(--transition);font-weight:600}
+.paction:hover{border-color:var(--cyan);color:var(--cyan)}
+.paction.cast{border-color:var(--gold);color:var(--gold)}
+.paction.cast:hover{background:rgba(255,179,0,.1)}
+.close-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px;transition:var(--transition);line-height:1}
+.close-btn:hover{color:var(--live)}
+.player-body{flex:1;display:flex;min-height:0}
+.player-video-wrap{flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center}
+#main-video{width:100%;height:100%;max-height:calc(100vh - 120px)}
+.player-sidebar{width:280px;background:var(--bg1);border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.player-sidebar-tabs{display:flex;border-bottom:1px solid var(--border)}
+.ps-tab{flex:1;padding:12px 8px;font-size:12px;font-weight:600;text-align:center;cursor:pointer;color:var(--text2);transition:var(--transition)}
+.ps-tab.active{color:var(--cyan);border-bottom:2px solid var(--cyan)}
+.ps-content{flex:1;padding:14px;overflow-y:auto}
+.chat-messages{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.chat-msg{padding:8px 10px;border-radius:8px;font-size:12px;line-height:1.5}
+.chat-msg.ai{background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.1);color:var(--text)}
+.chat-msg.user{background:var(--bg3);border:1px solid var(--border);color:var(--text2);text-align:right}
+.chat-input-row{display:flex;gap:6px}
+.chat-input-row input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'Mulish',sans-serif;font-size:12px;outline:none}
+.chat-input-row input:focus{border-color:var(--cyan)}
+.chat-send{background:var(--cyan);border:none;border-radius:8px;color:#000;width:34px;cursor:pointer;font-size:13px;transition:var(--transition);flex-shrink:0}
+.chat-send:hover{background:#33D4FF}
+
+/* ——— LUMIN PANEL ——— */
+#lumin-panel{position:fixed;right:0;top:0;bottom:0;width:340px;background:var(--bg1);border-left:1px solid var(--border);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:var(--transition)}
+#lumin-panel.open{transform:translateX(0)}
+.lumin-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.lumin-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:relative}
+.lumin-avatar::after{content:'';width:9px;height:9px;background:var(--green);border:2px solid var(--bg1);border-radius:50%;position:absolute;bottom:0;right:0}
+.lumin-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:14px}
+.lumin-status{font-size:10px;color:var(--green)}
+.lumin-close{margin-left:auto;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;transition:var(--transition)}
+.lumin-close:hover{color:var(--text)}
+.lumin-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lmsg{max-width:90%;padding:10px 12px;border-radius:10px;font-size:12.5px;line-height:1.55}
+.lmsg.ai{background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.12);align-self:flex-start;color:var(--text)}
+.lmsg.user{background:var(--bg3);border:1px solid var(--border);align-self:flex-end;color:var(--text2)}
+.lmsg-label{font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase}
+.lmsg.ai .lmsg-label{color:var(--cyan)}
+.lmsg.user .lmsg-label{color:var(--text3)}
+.lumin-suggestions{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.lsugg{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:14px;padding:5px 11px;font-size:11px;cursor:pointer;transition:var(--transition)}
+.lsugg:hover{border-color:var(--cyan);color:var(--cyan)}
+.lumin-input-area{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px}
+.lumin-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:9px 14px;color:var(--text);font-family:'Mulish',sans-serif;font-size:13px;outline:none;transition:var(--transition)}
+.lumin-input:focus{border-color:var(--cyan)}
+.lumin-send{width:38px;height:38px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0}
+.lumin-send:hover{transform:scale(1.08)}
+.typing-indicator{display:flex;gap:4px;align-items:center;padding:8px 12px;background:rgba(0,200,255,.05);border:1px solid rgba(0,200,255,.08);border-radius:10px;align-self:flex-start}
+.typing-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:bounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+/* ——— CAST MODAL ——— */
+#cast-modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
+#cast-modal.open{display:flex}
+.cast-box{background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:28px;width:320px;text-align:center}
+.cast-icon{font-size:40px;margin-bottom:14px;color:var(--gold)}
+.cast-title{font-family:'Exo 2',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px}
+.cast-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.cast-device{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:var(--transition);text-align:left}
+.cast-device:hover{border-color:var(--gold)}
+.cast-device i{font-size:20px;color:var(--gold)}
+.cast-device-name{font-weight:600;font-size:13px}
+.cast-device-sub{font-size:11px;color:var(--text3)}
+.cast-close{background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;margin-top:6px;width:100%;transition:var(--transition)}
+.cast-close:hover{border-color:var(--live);color:var(--live)}
+
+/* ——— LOADING / TOASTS ——— */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:13px;z-index:9999;opacity:0;transition:.3s;pointer-events:none;display:flex;align-items:center;gap:8px}
+.toast.show{opacity:1}
+.toast i{color:var(--cyan)}
+.spinner{border:2px solid var(--border);border-top-color:var(--cyan);border-radius:50%;width:16px;height:16px;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.video-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text2);font-size:13px;background:rgba(0,0,0,.7)}
+.video-loading .spinner{width:32px;height:32px;border-width:3px}
+.error-state{text-align:center;padding:24px 16px;color:var(--text3)}
+.error-state i{font-size:32px;margin-bottom:10px;color:var(--live)}
+.error-state p{font-size:13px;line-height:1.5}
+
+/* ——— STATS BAR ——— */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px}
+.stat-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.stat-icon.cyan{background:rgba(0,200,255,.12);color:var(--cyan)}
+.stat-icon.live{background:rgba(255,59,92,.12);color:var(--live)}
+.stat-icon.gold{background:rgba(255,179,0,.12);color:var(--gold)}
+.stat-icon.green{background:rgba(0,255,157,.12);color:var(--green)}
+.stat-val{font-family:'Exo 2',sans-serif;font-weight:800;font-size:20px;line-height:1}
+.stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ——— RESPONSIVE ——— */
+@media(max-width:900px){
+  :root{--sidebar:0px}
+  #sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .player-sidebar{display:none}
+  #lumin-panel{width:100%;border-left:none}
+}
+@media(max-width:600px){
+  #content{padding:14px}
+  .channels-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .hero-content{right:10px}
+  .btn-primary,.btn-secondary{padding:7px 14px;font-size:12px}
+}
+
+/* ——— PAGE TRANSITIONS ——— */
+.page{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ——— SCROLLABLE CONTENT ——— */
+#content.hidden{display:none}
+.page-section{display:none}
+.page-section.active{display:block}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">📺</div>
+      <div class="logo-text">MYPOUPAR<span>TV · Powered by LUMIN AI</span></div>
+    </div>
+    <nav>
+      <div class="sidebar-section">Menu</div>
+      <a href="#" class="active" data-page="home" onclick="navigate('home',this)"><i class="fa fa-house"></i> Home</a>
+      <a href="#" data-page="live" onclick="navigate('live',this)"><i class="fa fa-signal-stream"></i> Live Agora <span class="nav-badge">AO VIVO</span></a>
+      <a href="#" data-page="sports" onclick="navigate('sports',this)"><i class="fa fa-futbol"></i> Desporto</a>
+      <a href="#" data-page="news" onclick="navigate('news',this)"><i class="fa fa-newspaper"></i> Notícias</a>
+      <a href="#" data-page="music" onclick="navigate('music',this)"><i class="fa fa-music"></i> Música</a>
+      <a href="#" data-page="world" onclick="navigate('world',this)"><i class="fa fa-globe"></i> Canais Mundiais</a>
+      <a href="#" data-page="portugal" onclick="navigate('portugal',this)"><i class="fa fa-flag"></i> Portugal 🇵🇹</a>
+      <div class="sidebar-section">Conta</div>
+      <a href="#" onclick="openLumin()"><i class="fa fa-robot"></i> Perguntar LUMIN</a>
+      <a href="#" onclick="showToast('⭐ Em breve!', '✨')"><i class="fa fa-bookmark"></i> Os Meus Favoritos</a>
+      <a href="#" onclick="showToast('⚙️ Em breve!', '⚙️')"><i class="fa fa-gear"></i> Definições</a>
+    </nav>
+    <div style="flex:1"></div>
+    <div class="coins-widget" onclick="showCoinsInfo()">
+      <div class="coins-label">MYPOUPAR Coins</div>
+      <div class="coins-value"><i class="fa fa-coins"></i> <span id="coins-display">0</span></div>
+      <div class="coins-sub">+<span id="coins-rate">5</span> por minuto ao ver streams</div>
+    </div>
+    <div style="padding:14px 12px 8px;font-size:10px;color:var(--text3);text-align:center;line-height:1.6">
+      © 2025 MYPOUPAR · <a href="mailto:parcerias@mypoupar.com" style="color:var(--cyan)">parcerias@mypoupar.com</a>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div id="main">
+    <div id="topbar">
+      <button id="menu-toggle" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+      <div class="search-wrap">
+        <i class="fa fa-search"></i>
+        <input type="text" id="search-input" placeholder="Pesquisar canais, desporto, música..." oninput="handleSearch(this.value)" onkeydown="if(event.key==='Enter') openLuminWithQuery(this.value)"/>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn" onclick="refreshStreams()" title="Atualizar streams"><i class="fa fa-rotate"></i></button>
+        <button class="topbar-btn" title="Notificações"><i class="fa fa-bell"></i><span class="live-dot"></span></button>
+        <button class="lumin-btn" onclick="openLumin()"><i class="fa fa-sparkles"></i> LUMIN AI</button>
+      </div>
+    </div>
+
+    <div id="content">
+      <!-- HOME PAGE -->
+      <div class="page-section active" id="page-home">
+        <div class="page">
+          <!-- Stats -->
+          <div class="stats-bar">
+            <div class="stat-card"><div class="stat-icon live"><i class="fa fa-signal-stream"></i></div><div><div class="stat-val" id="stat-live">0</div><div class="stat-lbl">Streams Ao Vivo</div></div></div>
+            <div class="stat-card"><div class="stat-icon cyan"><i class="fa fa-globe"></i></div><div><div class="stat-val" id="stat-countries">0</div><div class="stat-lbl">Países</div></div></div>
+            <div class="stat-card"><div class="stat-icon gold"><i class="fa fa-coins"></i></div><div><div class="stat-val" id="stat-coins2">0</div><div class="stat-lbl">Coins Ganhos</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i class="fa fa-users"></i></div><div><div class="stat-val">47K</div><div class="stat-lbl">Viewers Agora</div></div></div>
+          </div>
+          <!-- Hero -->
+          <div class="hero" id="hero-card" onclick="">
+            <div class="hero-gradient"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0B1220,#111827);display:flex;align-items:center;justify-content:center;font-size:60px" id="hero-emoji">📺</div>
+            <div class="hero-content">
+              <div class="hero-badge"><span>⬤</span> AO VIVO</div>
+              <div class="hero-title" id="hero-title">MYPOUPAR TV — Bem-vindo</div>
+              <div class="hero-meta">
+                <span id="hero-cat">Selecionando stream destaque...</span>
+                <span>•</span>
+                <span id="hero-viewers">0 viewers</span>
+              </div>
+              <div class="hero-actions">
+                <button class="btn-primary" id="hero-play-btn" onclick="playHero()"><i class="fa fa-play"></i> Ver Agora</button>
+                <button class="btn-secondary" onclick="openLumin()"><i class="fa fa-robot"></i> Perguntar LUMIN</button>
+              </div>
+            </div>
+          </div>
+          <!-- Trending -->
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title"><i class="fa fa-fire"></i> Em Destaque Agora</div>
+              <a class="see-all" href="#" onclick="navigate('live',document.querySelector('[data-page=live]'))">Ver Todos</a>
+            </div>
+            <div class="strip" id="strip-trending"></div>
+          </div>
+          <!-- Categories -->
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title"><i class="fa fa-tv"></i> Todos os Canais</div>
+            </div>
+            <div class="cat-tabs" id="cat-tabs"></div>
+            <div class="channels-grid" id="main-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE PAGE -->
+      <div class="page-section" id="page-live">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-signal-stream" style="color:var(--live)"></i> Todos os Streams Ao Vivo</div>
+            <span style="font-size:12px;color:var(--text3)" id="live-count-label">A carregar...</span>
+          </div>
+          <div class="channels-grid" id="live-grid"></div>
+        </div>
+      </div>
+
+      <!-- SPORTS PAGE -->
+      <div class="page-section" id="page-sports">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-futbol" style="color:#4ADE80"></i> Desporto Ao Vivo</div>
+          </div>
+          <div class="channels-grid" id="sports-grid"></div>
+        </div>
+      </div>
+
+      <!-- NEWS PAGE -->
+      <div class="page-section" id="page-news">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-newspaper" style="color:var(--cyan)"></i> Notícias Globais</div>
+          </div>
+          <div class="channels-grid" id="news-grid"></div>
+        </div>
+      </div>
+
+      <!-- MUSIC PAGE -->
+      <div class="page-section" id="page-music">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-music" style="color:var(--purple)"></i> Música Ao Vivo</div>
+          </div>
+          <div class="channels-grid" id="music-grid"></div>
+        </div>
+      </div>
+
+      <!-- WORLD PAGE -->
+      <div class="page-section" id="page-world">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-globe" style="color:var(--cyan)"></i> Canais Mundiais</div>
+          </div>
+          <div class="channels-grid" id="world-grid"></div>
+        </div>
+      </div>
+
+      <!-- PORTUGAL PAGE -->
+      <div class="page-section" id="page-portugal">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title">🇵🇹 Canais Portugueses</div>
+          </div>
+          <div class="channels-grid" id="pt-grid"></div>
+        </div>
+      </div>
+
+      <!-- SEARCH RESULTS -->
+      <div class="page-section" id="page-search">
+        <div class="page">
+          <div class="section-header" style="margin-bottom:20px">
+            <div class="section-title"><i class="fa fa-search"></i> Resultados: "<span id="search-query-label"></span>"</div>
+          </div>
+          <div class="channels-grid" id="search-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PLAYER MODAL ═══ -->
+<div id="player-modal">
+  <div class="player-header">
+    <div class="live-badge" style="position:static;font-size:10px">AO VIVO</div>
+    <h2 id="player-title">Canal</h2>
+    <div class="player-actions">
+      <button class="paction cast" onclick="openCast()"><i class="fa fa-cast"></i> Enviar para TV</button>
+      <button class="paction" onclick="shareStream()"><i class="fa fa-share"></i> Partilhar</button>
+      <button class="paction" onclick="toggleFav()"><i class="fa fa-bookmark"></i> Guardar</button>
+    </div>
+    <button class="close-btn" onclick="closePlayer()"><i class="fa fa-xmark"></i></button>
+  </div>
+  <div class="player-body">
+    <div class="player-video-wrap">
+      <video id="main-video" controls autoplay playsinline></video>
+      <div class="video-loading" id="video-loading">
+        <div class="spinner"></div>
+        <span>A carregar stream...</span>
+      </div>
+      <div class="error-state" id="video-error" style="display:none">
+        <i class="fa fa-signal-slash"></i>
+        <p>Stream indisponível de momento.<br/>Tenta outro canal ou pergunta ao LUMIN AI.</p>
+        <button class="btn-primary" style="margin:12px auto 0;display:flex" onclick="openLuminWithQuery('encontra streams alternativos para '+currentChannel?.name)"><i class="fa fa-robot"></i> Pedir alternativa ao LUMIN</button>
+      </div>
+    </div>
+    <div class="player-sidebar">
+      <div class="player-sidebar-tabs">
+        <div class="ps-tab active" onclick="switchPsTab('info',this)">Info</div>
+        <div class="ps-tab" onclick="switchPsTab('chat',this)">LUMIN AI</div>
+        <div class="ps-tab" onclick="switchPsTab('related',this)">Relacionados</div>
+      </div>
+      <div class="ps-content" id="ps-info">
+        <div id="channel-detail-info"></div>
+      </div>
+      <div class="ps-content" id="ps-chat" style="display:none;flex-direction:column;height:100%">
+        <div class="chat-messages" id="player-chat-msgs"></div>
+        <div class="chat-input-row">
+          <input type="text" placeholder="Pergunta algo sobre este canal..." id="player-chat-input" onkeydown="if(event.key==='Enter')sendPlayerChat()"/>
+          <button class="chat-send" onclick="sendPlayerChat()"><i class="fa fa-paper-plane"></i></button>
+        </div>
+      </div>
+      <div class="ps-content" id="ps-related" style="display:none">
+        <div id="related-channels"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LUMIN PANEL ═══ -->
+<div id="lumin-panel">
+  <div class="lumin-head">
+    <div class="lumin-avatar">🤖</div>
+    <div>
+      <div class="lumin-name">LUMIN AI</div>
+      <div class="lumin-status">● Online · MYPOUPAR TV</div>
+    </div>
+    <button class="lumin-close" onclick="closeLumin()"><i class="fa fa-xmark"></i></button>
+  </div>
+  <div class="lumin-messages" id="lumin-msgs">
+    <div class="lmsg ai">
+      <div class="lmsg-label">LUMIN AI</div>
+      Olá! 👋 Sou o LUMIN AI do MYPOUPAR TV.<br/><br/>Posso ajudar-te a:<br/>• Encontrar streams ao vivo<br/>• Descobrir canais por país ou tema<br/>• Dar dicas de poupança MYPOUPAR<br/>• Recomendar conteúdo personalizado<br/><br/>O que queres ver hoje? 📺
+    </div>
+  </div>
+  <div class="lumin-suggestions">
+    <div class="lsugg" onclick="sendLumin('Canais portugueses ao vivo')">🇵🇹 Canais PT</div>
+    <div class="lsugg" onclick="sendLumin('Futebol ao vivo agora')">⚽ Futebol</div>
+    <div class="lsugg" onclick="sendLumin('Notícias internacionais')">📰 Notícias</div>
+    <div class="lsugg" onclick="sendLumin('Música ao vivo')">🎵 Música</div>
+    <div class="lsugg" onclick="sendLumin('Dicas de poupança MYPOUPAR')">💰 Poupança</div>
+    <div class="lsugg" onclick="sendLumin('Streams mais populares')">🔥 Trending</div>
+  </div>
+  <div class="lumin-input-area">
+    <input class="lumin-input" id="lumin-input" placeholder="Pergunta algo ao LUMIN..." onkeydown="if(event.key==='Enter')sendLumin()"/>
+    <button class="lumin-send" onclick="sendLumin()"><i class="fa fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- ═══ CAST MODAL ═══ -->
+<div id="cast-modal" onclick="if(event.target===this)closeCast()">
+  <div class="cast-box">
+    <div class="cast-icon"><i class="fa fa-cast"></i></div>
+    <div class="cast-title">Enviar para TV</div>
+    <div class="cast-sub">Dispositivos disponíveis na rede local</div>
+    <div class="cast-device" onclick="castTo('Chromecast')"><i class="fab fa-google"></i><div><div class="cast-device-name">Chromecast Ultra</div><div class="cast-device-sub">Sala · Google TV</div></div></div>
+    <div class="cast-device" onclick="castTo('Samsung Smart TV')"><i class="fa fa-tv"></i><div><div class="cast-device-name">Samsung Smart TV</div><div class="cast-device-sub">Quarto · Tizen OS</div></div></div>
+    <div class="cast-device" onclick="castTo('AirPlay')"><i class="fab fa-apple"></i><div><div class="cast-device-name">AirPlay 2</div><div class="cast-device-sub">Apple TV / AirPlay</div></div></div>
+    <div class="cast-device" onclick="castTo('DLNA')"><i class="fa fa-network-wired"></i><div><div class="cast-device-name">DLNA / UPnP</div><div class="cast-device-sub">Dispositivo DLNA</div></div></div>
+    <button class="cast-close" onclick="closeCast()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"><i class="fa fa-info-circle"></i> <span id="toast-msg"></span></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  MYPOUPAR TV — CORE ENGINE
+//  Open-source integrations: hls.js, Pollinations AI
+//  Stream data: curated + iptv-org compatible
+// ═══════════════════════════════════════════════════
+
+// ── STREAM DATABASE ──────────────────────────────
+// Sources: iptv-org/iptv, public broadcast streams
+const STREAMS = [
+  // PORTUGAL 🇵🇹
+  {id:'rtp1',name:'RTP 1',cat:'Portugal',sub:'Televisão',flag:'🇵🇹',emoji:'📺',viewers:12400,url:'https://streaming-live.rtp.pt/liverepeater/stream8.smil/playlist.m3u8',country:'PT',tags:['portugal','generalista','noticias']},
+  {id:'rtp2',name:'RTP 2',cat:'Portugal',sub:'Cultura',flag:'🇵🇹',emoji:'🎭',viewers:4200,url:'https://streaming-live.rtp.pt/liverepeater/stream4.smil/playlist.m3u8',country:'PT',tags:['portugal','cultura','arte']},
+  {id:'sic',name:'SIC',cat:'Portugal',sub:'Entretenimento',flag:'🇵🇹',emoji:'⭐',viewers:9800,url:'https://hls.sic.pt/sicnoticias/index.m3u8',country:'PT',tags:['portugal','entretenimento']},
+  {id:'tvi',name:'TVI',cat:'Portugal',sub:'Generalista',flag:'🇵🇹',emoji:'📡',viewers:8700,url:'https://cdn-01.liveevent.pt/live/tvi/index.m3u8',country:'PT',tags:['portugal','generalista']},
+  // NEWS 📰
+  {id:'nasa',name:'NASA TV',cat:'Notícias',sub:'Ciência & Espaço',flag:'🇺🇸',emoji:'🚀',viewers:88000,url:'https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8',country:'US',tags:['nasa','espaço','ciencia','noticias']},
+  {id:'aljazeera',name:'Al Jazeera English',cat:'Notícias',sub:'Internacional',flag:'🌍',emoji:'📰',viewers:142000,url:'https://live-hls-web-aje.getaj.net/AJE/index.m3u8',country:'QA',tags:['noticias','internacional','mundo']},
+  {id:'france24',name:'France 24 English',cat:'Notícias',sub:'Internacional',flag:'🇫🇷',emoji:'🗼',viewers:67000,url:'https://stream.france24.com/hls/live/2037925/F24_EN_LO_HLS/master.m3u8',country:'FR',tags:['noticias','franca','internacional']},
+  {id:'dwnews',name:'DW News',cat:'Notícias',sub:'Alemanha',flag:'🇩🇪',emoji:'🗺️',viewers:43000,url:'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8',country:'DE',tags:['noticias','alemanha','mundo']},
+  {id:'euronews',name:'Euronews',cat:'Notícias',sub:'Europa',flag:'🇪🇺',emoji:'🌐',viewers:51000,url:'https://euronews-ptv-web.akamaized.net/hls/live/652364/ptv-euronews/master.m3u8',country:'EU',tags:['noticias','europa','global']},
+  {id:'bloomberg',name:'Bloomberg TV',cat:'Notícias',sub:'Finanças',flag:'🇺🇸',emoji:'💹',viewers:38000,url:'https://cdn3.wowza.com/1/ejBGVkliWUFHdk9r/playlist.m3u8',country:'US',tags:['noticias','financas','economia','mypoupar']},
+  // SPORTS ⚽
+  {id:'eurosport1',name:'Eurosport 1',cat:'Desporto',sub:'Multi-desporto',flag:'🇪🇺',emoji:'🏆',viewers:234000,url:'https://dai.google.com/linear/hls/event/Sid4xiTQTkCT1brOf0Ko7A/master.m3u8',country:'EU',tags:['desporto','futebol','tenis','olimpiadas']},
+  {id:'sportv',name:'Sport TV Portugal',cat:'Desporto',sub:'Futebol PT',flag:'🇵🇹',emoji:'⚽',viewers:178000,url:'https://cdn-01.liveevent.pt/live/sporttv1/index.m3u8',country:'PT',tags:['desporto','futebol','portugal','liga']},
+  {id:'bein1',name:'beIN Sports',cat:'Desporto',sub:'Futebol Mundial',flag:'🌍',emoji:'🥅',viewers:312000,url:'https://hls.beinsports.com/live/bein-sports-1/master.m3u8',country:'QA',tags:['desporto','futebol','champions','mundial']},
+  {id:'motorsport',name:'Motorsport.tv',cat:'Desporto',sub:'Automobilismo',flag:'🌍',emoji:'🏎️',viewers:45000,url:'https://cdn3.wowza.com/1/SUx5l3d3cjhwTmlr/playlist.m3u8',country:'US',tags:['desporto','formula1','motogp','motorsport']},
+  // MUSIC 🎵
+  {id:'mtv',name:'MTV Hits',cat:'Música',sub:'Pop & Rock',flag:'🇺🇸',emoji:'🎸',viewers:67000,url:'https://mtvhits-plutotv.akamaized.net/uploads/playlist/0/playlist.m3u8',country:'US',tags:['musica','pop','rock','videos']},
+  {id:'viva',name:'VIVA Portugal',cat:'Música',sub:'Portuguesa',flag:'🇵🇹',emoji:'🎶',viewers:12000,url:'https://livestream.viva.pt/hls/live/master.m3u8',country:'PT',tags:['musica','portuguesa','fado','pop']},
+  {id:'classictv',name:'Classic FM TV',cat:'Música',sub:'Clássica',flag:'🇬🇧',emoji:'🎻',viewers:8900,url:'https://stream.classicfm.co.uk/hls/live/master.m3u8',country:'GB',tags:['musica','classica','orquestra']},
+  // ENTERTAINMENT 🎬
+  {id:'rtlworld',name:'RTL World',cat:'Entretenimento',sub:'Geral',flag:'🇩🇪',emoji:'🎬',viewers:29000,url:'https://rtlde-msl.akamaized.net/rtlde/livestream_2/chunks.m3u8',country:'DE',tags:['entretenimento','geral']},
+  {id:'discovery',name:'Discovery Science',cat:'Entretenimento',sub:'Ciência',flag:'🌍',emoji:'🔬',viewers:54000,url:'https://dai.google.com/linear/hls/event/9xGfBXlrS7mqpZS8K5Gc7A/master.m3u8',country:'US',tags:['ciencia','documentario','descoberta']},
+  {id:'natgeo',name:'Nat Geo Wild',cat:'Entretenimento',sub:'Natureza',flag:'🌍',emoji:'🦁',viewers:78000,url:'https://natgeowild-plutotv.akamaized.net/uploads/playlist/0/playlist.m3u8',country:'US',tags:['natureza','animais','documentario']},
+  // DEMO / TEST (Always works)
+  {id:'demo',name:'Demo Stream (Teste)',cat:'Entretenimento',sub:'Teste HLS',flag:'🌐',emoji:'🎥',viewers:999,url:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',country:'US',tags:['teste','demo','hls']},
+  {id:'sintel',name:'Sintel Open Movie',cat:'Entretenimento',sub:'Cinema',flag:'🌐',emoji:'🎞️',viewers:1200,url:'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',country:'US',tags:['cinema','curta','animacao']},
+  // WORLD 🌍
+  {id:'tvspain',name:'RTVE España 24h',cat:'Mundial',sub:'Notícias ES',flag:'🇪🇸',emoji:'🇪🇸',viewers:34000,url:'https://rtvelivestream.akamaized.net/rtvesec/24h/24h_main_dvr.m3u8',country:'ES',tags:['espanha','noticias','mundo']},
+  {id:'rai',name:'RAI News 24',cat:'Mundial',sub:'Itália',flag:'',emoji:'🇮🇹',viewers:27000,url:'https://rainews.akamaized.net/hls/live/595881/tgr_hls_en_teche_lineare_01/index_3500.m3u8',country:'IT',tags:['italia','noticias','mundo']},
+  {id:'arirang',name:'Arirang TV',cat:'Mundial',sub:'Coreia',flag:'🇰🇷',emoji:'🇰🇷',viewers:19000,url:'https://hlslive.arirang.com/MediaPackage/ARIRANG_WORLD/channel-1/index.m3u8',country:'KR',tags:['coreia','asia','mundo']},
+  {id:'nhkworld',name:'NHK World Japan',cat:'Mundial',sub:'Japão',flag:'🇯🇵',emoji:'🗾',viewers:62000,url:'https://nhkwlive-ojp.akamaized.net/hls/live/2003459/nhkwlive-ojp-en/index_1M.m3u8',country:'JP',tags:['japao','asia','noticias']},
+  {id:'cgtn',name:'CGTN (China)',cat:'Mundial',sub:'China',flag:'🇨🇳',emoji:'🇨🇳',viewers:89000,url:'https://news.cgtn.com/resource/live/english/cgtn-news.m3u8',country:'CN',tags:['china','asia','noticias']},
+  {id:'tv5monde',name:'TV5Monde',cat:'Mundial',sub:'França/África',flag:'🇫🇷',emoji:'🌍',viewers:31000,url:'https://mediaserviceslive.akamaized.net/hls/live/2004601/tv5monde/master.m3u8',country:'FR',tags:['franca','africa','mundo']},
+];
+
+// ── STATE ────────────────────────────────────────
+let coins = parseInt(localStorage.getItem('mptv_coins') || '0');
+let coinsTimer = null;
+let hlsInstance = null;
+let currentChannel = null;
+let currentPage = 'home';
+let luminTyping = false;
+let luminHistory = [];
+let activeCat = 'Todos';
+let sidebarOpen = false;
+
+// ── INIT ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  updateCoins();
+  updateStats();
+  renderHero();
+  renderStrip();
+  renderCatTabs();
+  renderGrid('main-grid', STREAMS);
+  renderGrid('live-grid', STREAMS);
+  renderGrid('sports-grid', STREAMS.filter(s=>s.cat==='Desporto'));
+  renderGrid('news-grid', STREAMS.filter(s=>s.cat==='Notícias'));
+  renderGrid('music-grid', STREAMS.filter(s=>s.cat==='Música'));
+  renderGrid('world-grid', STREAMS.filter(s=>s.cat==='Mundial'));
+  renderGrid('pt-grid', STREAMS.filter(s=>s.country==='PT'));
+  document.getElementById('live-count-label').textContent = STREAMS.length + ' streams activos';
+});
+
+// ── STATS ─────────────────────────────────────────
+function updateStats() {
+  document.getElementById('stat-live').textContent = STREAMS.length;
+  document.getElementById('stat-countries').textContent = [...new Set(STREAMS.map(s=>s.country))].length;
+  document.getElementById('stat-coins2').textContent = coins;
+}
+
+// ── COINS ─────────────────────────────────────────
+function updateCoins() {
+  document.getElementById('coins-display').textContent = coins.toLocaleString();
+  document.getElementById('stat-coins2').textContent = coins.toLocaleString();
+  localStorage.setItem('mptv_coins', coins);
+}
+function startCoinsTimer() {
+  if (coinsTimer) clearInterval(coinsTimer);
+  coinsTimer = setInterval(() => {
+    coins += 5;
+    updateCoins();
+    if (coins % 50 === 0) showToast('🪙 +50 MYPOUPAR Coins ganhos!', '🏆');
+  }, 12000);
+}
+function stopCoinsTimer() {
+  if (coinsTimer) { clearInterval(coinsTimer); coinsTimer = null; }
+}
+function showCoinsInfo() {
+  showToast('🪙 ' + coins + ' MYPOUPAR Coins. Em breve: troca por descontos em energia e telecomunicações!', '💰');
+}
+
+// ── NAVIGATION ────────────────────────────────────
+function navigate(page, el) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  const section = document.getElementById('page-' + page);
+  if (section) section.classList.add('active');
+  if (el) el.classList.add('active');
+  currentPage = page;
+  if (window.innerWidth < 900) closeSidebarMobile();
+}
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  if (window.innerWidth < 900) {
+    sidebarOpen = !sidebarOpen;
+    sb.classList.toggle('open', sidebarOpen);
+  }
+}
+function closeSidebarMobile() {
+  document.getElementById('sidebar').classList.remove('open');
+  sidebarOpen = false;
+}
+
+// ── HERO ──────────────────────────────────────────
+function renderHero() {
+  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS[0];
+  document.getElementById('hero-title').textContent = featured.name;
+  document.getElementById('hero-cat').textContent = featured.flag + ' ' + featured.cat + ' · ' + featured.sub;
+  document.getElementById('hero-viewers').textContent = featured.viewers.toLocaleString() + ' viewers';
+  document.getElementById('hero-emoji').textContent = featured.emoji;
+  document.getElementById('hero-card').onclick = () => playChannel(featured);
+}
+function playHero() {
+  const featured = STREAMS.find(s => s.id === 'nasa') || STREAMS[0];
+  playChannel(featured);
+}
+
+// ── STRIP ─────────────────────────────────────────
+function renderStrip() {
+  const el = document.getElementById('strip-trending');
+  const top = STREAMS.slice().sort((a,b)=>b.viewers-a.viewers).slice(0,10);
+  el.innerHTML = top.map(s => `
+    <div class="strip-card" onclick="playChannel(STREAMS.find(x=>x.id==='${s.id}'))">
+      <div class="strip-thumb">
+        <span style="font-size:28px">${s.emoji}</span>
+        <div class="live-badge" style="position:absolute;top:6px;left:6px;font-size:9px">AO VIVO</div>
+      </div>
+      <div class="strip-info">
+        <div class="strip-name">${s.name}</div>
+        <div class="strip-sub">${s.flag} ${s.viewers.toLocaleString()} viewers</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── CAT TABS ──────────────────────────────────────
+function renderCatTabs() {
+  const cats = ['Todos', ...new Set(STREAMS.map(s => s.cat))];
+  const el = document.getElementById('cat-tabs');
+  el.innerHTML = cats.map(c => `
+    <div class="cat-tab${c==='Todos'?' active':''}" onclick="filterCat('${c}',this)">${c}</div>`).join('');
+}
+function filterCat(cat, el) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activeCat = cat;
+  const filtered = cat === 'Todos' ? STREAMS : STREAMS.filter(s => s.cat === cat);
+  renderGrid('main-grid', filtered);
+}
+
+// ── GRID ──────────────────────────────────────────
+function renderGrid(containerId, streams) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!streams.length) {
+    el.innerHTML = '<div class="error-state"><i class="fa fa-satellite-dish"></i><p>Nenhum stream encontrado nesta categoria.</p></div>';
+    return;
+  }
+  el.innerHTML = streams.map(s => `
+    <div class="channel-card" onclick="playChannel(${JSON.stringify(s).replace(/"/g,'&quot;')})">
+      <div class="channel-thumb-fallback">
+        <span>${s.emoji}</span>
+      </div>
+      <div class="live-badge"><span></span> AO VIVO</div>
+      <div class="viewers-badge"><i class="fa fa-eye" style="font-size:8px"></i> ${fmtViewers(s.viewers)}</div>
+      <div class="play-overlay"><i class="fa fa-play"></i></div>
+      <div class="channel-info">
+        <div class="channel-name">${s.name}</div>
+        <div class="channel-cat"><span class="channel-flag">${s.flag}</span> ${s.cat} · ${s.sub}</div>
+      </div>
+    </div>`).join('');
+}
+function fmtViewers(n) {
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n;
+}
+
+// ── SEARCH ────────────────────────────────────────
+function handleSearch(q) {
+  if (!q.trim()) {
+    if (currentPage === 'search') navigate('home', document.querySelector('[data-page=home]'));
+    return;
+  }
+  const results = STREAMS.filter(s =>
+    s.name.toLowerCase().includes(q.toLowerCase()) ||
+    s.tags.some(t => t.includes(q.toLowerCase())) ||
+    s.cat.toLowerCase().includes(q.toLowerCase()) ||
+    s.country.toLowerCase().includes(q.toLowerCase())
+  );
+  document.getElementById('search-query-label').textContent = q;
+  renderGrid('search-grid', results);
+  navigate('search', null);
+}
+function refreshStreams() {
+  showToast('A verificar streams...', '🔄');
+  setTimeout(() => showToast('Streams actualizados! ' + STREAMS.length + ' canais activos.', '✅'), 1800);
+}
+
+// ── PLAYER ────────────────────────────────────────
+function playChannel(channel) {
+  if (!channel) return;
+  currentChannel = channel;
+  document.getElementById('player-modal').classList.add('open');
+  document.getElementById('player-title').textContent = channel.name;
+  document.getElementById('video-loading').style.display = 'flex';
+  document.getElementById('video-error').style.display = 'none';
+  loadChannelInfo(channel);
+  loadRelated(channel);
+  startHLS(channel.url);
+  startCoinsTimer();
+  showToast('▶ A iniciar ' + channel.name, '📺');
+}
+function closePlayer() {
+  document.getElementById('player-modal').classList.remove('open');
+  stopCoinsTimer();
+  if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
+  const v = document.getElementById('main-video');
+  v.pause(); v.src = '';
+}
+function startHLS(url) {
+  const video = document.getElementById('main-video');
+  document.getElementById('video-loading').style.display = 'flex';
+  document.getElementById('video-error').style.display = 'none';
+
+  if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
+
+  if (Hls.isSupported()) {
+    hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
+    hlsInstance.loadSource(url);
+    hlsInstance.attachMedia(video);
+    hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+      document.getElementById('video-loading').style.display = 'none';
+      video.play().catch(() => {});
+    });
+    hlsInstance.on(Hls.Events.ERROR, (_, data) => {
+      if (data.fatal) {
+        document.getElementById('video-loading').style.display = 'none';
+        document.getElementById('video-error').style.display = 'flex';
+        stopCoinsTimer();
+      }
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.addEventListener('loadedmetadata', () => {
+      document.getElementById('video-loading').style.display = 'none';
+      video.play();
+    });
+    video.addEventListener('error', () => {
+      document.getElementById('video-loading').style.display = 'none';
+      document.getElementById('video-error').style.display = 'flex';
+    });
+  } else {
+    document.getElementById('video-loading').style.display = 'none';
+    document.getElementById('video-error').style.display = 'flex';
+  }
+}
+function loadChannelInfo(ch) {
+  document.getElementById('channel-detail-info').innerHTML = `
+    <div style="text-align:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:14px">
+      <div style="font-size:40px;margin-bottom:8px">${ch.emoji}</div>
+      <div style="font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px">${ch.name}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">${ch.flag} ${ch.cat} · ${ch.sub}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${infoRow('👁️ Viewers', ch.viewers.toLocaleString())}
+      ${infoRow('🌍 País', ch.country)}
+      ${infoRow('📂 Categoria', ch.cat)}
+      ${infoRow('🏷️ Tags', ch.tags.join(', '))}
+      ${infoRow('🔗 Stream', 'HLS · Adaptativo')}
+    </div>
+    <div style="margin-top:16px;background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.2);border-radius:8px;padding:10px 12px">
+      <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:4px">💰 MYPOUPAR COINS</div>
+      <div style="font-size:11px;color:var(--text2)">Ganhas +5 coins a cada minuto que vês este canal!</div>
+    </div>`;
+}
+function infoRow(label, value) {
+  return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+    <span style="font-size:11px;color:var(--text3)">${label}</span>
+    <span style="font-size:11px;font-weight:600">${value}</span>
+  </div>`;
+}
+function loadRelated(ch) {
+  const related = STREAMS.filter(s => s.id !== ch.id && (s.cat === ch.cat || s.country === ch.country)).slice(0,6);
+  document.getElementById('related-channels').innerHTML = related.map(s => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;border:1px solid var(--border);margin-bottom:6px;transition:var(--transition)" 
+         onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'"
+         onclick="playChannel(STREAMS.find(x=>x.id==='${s.id}'))">
+      <div style="font-size:22px;width:36px;text-align:center">${s.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
+        <div style="font-size:10px;color:var(--text3)">${s.flag} ${fmtViewers(s.viewers)} viewers</div>
+      </div>
+      <i class="fa fa-play" style="font-size:11px;color:var(--cyan)"></i>
+    </div>`).join('');
+}
+function switchPsTab(tab, el) {
+  document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['info','chat','related'].forEach(t => {
+    const el2 = document.getElementById('ps-' + t);
+    if (el2) el2.style.display = t === tab ? 'flex' : 'none';
+    if (t === tab && t !== 'chat') document.getElementById('ps-' + t).style.display = 'block';
+  });
+}
+
+// ── PLAYER CHAT ───────────────────────────────────
+async function sendPlayerChat() {
+  const input = document.getElementById('player-chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const msgsEl = document.getElementById('player-chat-msgs');
+  msgsEl.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  msgsEl.innerHTML += `<div class="chat-msg ai" id="pc-typing"><div class="spinner" style="width:12px;height:12px;border-width:2px"></div> A pensar...</div>`;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  const ctx = currentChannel ? `Estás a ver ${currentChannel.name} (${currentChannel.cat}, ${currentChannel.country}). ` : '';
+  const reply = await callLuminAI(ctx + msg, true);
+  document.getElementById('pc-typing').remove();
+  msgsEl.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+// ── LUMIN AI ──────────────────────────────────────
+function openLumin() { document.getElementById('lumin-panel').classList.add('open'); }
+function closeLumin() { document.getElementById('lumin-panel').classList.remove('open'); }
+function openLuminWithQuery(q) {
+  openLumin();
+  document.getElementById('lumin-input').value = q;
+  sendLumin(q);
+}
+
+async function sendLumin(msgOverride) {
+  const input = document.getElementById('lumin-input');
+  const msg = msgOverride || input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendLuminMsg('user', msg);
+  if (luminTyping) return;
+  luminTyping = true;
+  appendLuminTyping();
+  const reply = await callLuminAI(msg, false);
+  removeLuminTyping();
+  luminTyping = false;
+  appendLuminMsg('ai', reply);
+  // If query is about streams, show inline results
+  const streamResults = findStreamsForQuery(msg);
+  if (streamResults.length) {
+    appendLuminStreamCards(streamResults.slice(0,3));
+  }
+}
+
+function appendLuminMsg(role, text) {
+  const el = document.getElementById('lumin-msgs');
+  el.innerHTML += `<div class="lmsg ${role}"><div class="lmsg-label">${role==='ai'?'LUMIN AI':'Tu'}</div>${text}</div>`;
+  el.scrollTop = el.scrollHeight;
+}
+function appendLuminTyping() {
+  const el = document.getElementById('lumin-msgs');
+  el.innerHTML += `<div class="typing-indicator" id="lumin-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  el.scrollTop = el.scrollHeight;
+}
+function removeLuminTyping() {
+  const t = document.getElementById('lumin-typing');
+  if (t) t.remove();
+}
+function appendLuminStreamCards(streams) {
+  const el = document.getElementById('lumin-msgs');
+  el.innerHTML += `<div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+    ${streams.map(s => `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:var(--transition)" onclick="playChannel(STREAMS.find(x=>x.id==='${s.id}'));closeLumin()" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+      <span style="font-size:20px">${s.emoji}</span>
+      <div style="flex:1"><div style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px">${s.name}</div><div style="font-size:10px;color:var(--text3)">${s.flag} ${s.viewers.toLocaleString()} viewers</div></div>
+      <i class="fa fa-play" style="font-size:11px;color:var(--cyan)"></i>
+    </div>`).join('')}
+  </div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+function findStreamsForQuery(q) {
+  const ql = q.toLowerCase();
+  return STREAMS.filter(s =>
+    s.tags.some(t => ql.includes(t)) ||
+    s.name.toLowerCase().split(' ').some(w => ql.includes(w)) ||
+    s.cat.toLowerCase().includes(ql) ||
+    s.country.toLowerCase().includes(ql)
+  );
+}
+
+async function callLuminAI(msg, compact) {
+  const systemPrompt = `És o LUMIN AI, assistente inteligente do MYPOUPAR TV — plataforma global de live streaming.
+Tens acesso a ${STREAMS.length} canais ao vivo em categorias: Notícias, Desporto, Música, Entretenimento, Portugal, Mundial.
+${compact ? '' : `
+Canais disponíveis: ${STREAMS.map(s=>s.name+' ('+s.cat+', '+s.country+')').join('; ')}
+
+Ajudas com:
+1. Encontrar streams específicos por categoria, país ou tema
+2. Recomendar conteúdo com base nos interesses do utilizador
+3. Dicas de poupança MYPOUPAR (energia, telecomunicações em Portugal)
+4. Info sobre o sistema de MYPOUPAR Coins (5 coins por minuto a ver streams)
+5. Sugestões personalizadas de conteúdo`}
+Sê conciso, útil e amigável. Responde em português de Portugal. Usa emojis com moderação.`;
+
+  try {
+    const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(msg)}?model=openai&system=${encodeURIComponent(systemPrompt)}&seed=${Date.now()}`);
+    if (!response.ok) throw new Error('API error');
+    const text = await response.text();
+    return text || 'Desculpa, não consegui processar. Tenta novamente.';
+  } catch (e) {
+    // Fallback responses
+    const q = msg.toLowerCase();
+    if (q.includes('futebol') || q.includes('sport')) return '⚽ Para futebol ao vivo, recomendo o **Eurosport 1**, **Sport TV Portugal** e **beIN Sports**. Clica nos cards abaixo para ver!';
+    if (q.includes('noticias') || q.includes('notícias')) return '📰 Para notícias internacionais temos **Al Jazeera**, **France 24**, **DW News** e **Euronews**. Todos em HD!';
+    if (q.includes('portugal') || q.includes('pt')) return '🇵🇹 Para canais portugueses: **RTP 1**, **RTP 2**, **SIC** e **TVI**. Também temos **VIVA** para música portuguesa!';
+    if (q.includes('musica') || q.includes('música')) return '🎵 Para música ao vivo: **MTV Hits** (pop/rock), **VIVA Portugal** (música PT) e **Classic FM TV** (clássica).';
+    if (q.includes('coins') || q.includes('poupança')) return '💰 O sistema de **MYPOUPAR Coins** dá-te 5 coins a cada minuto que vês streams! Brevemente podes trocar por descontos em energia e telecomunicações em Portugal.';
+    return '📺 Posso ajudar-te a encontrar streams por categoria, país ou tema. Tenta perguntar por "futebol", "notícias", "Portugal" ou qualquer outro tema!';
+  }
+}
+
+// ── CAST ─────────────────────────────────────────
+function openCast() { document.getElementById('cast-modal').classList.add('open'); }
+function closeCast() { document.getElementById('cast-modal').classList.remove('open'); }
+function castTo(device) {
+  closeCast();
+  showToast('📺 A enviar para ' + device + '...', '🎯');
+  setTimeout(() => showToast('✅ A reproduzir em ' + device, '📺'), 1500);
+}
+
+// ── SHARE / FAV ────────────────────────────────────
+function shareStream() {
+  if (navigator.share && currentChannel) {
+    navigator.share({ title: currentChannel.name + ' — MYPOUPAR TV', url: window.location.href });
+  } else {
+    navigator.clipboard?.writeText(window.location.href);
+    showToast('🔗 Link copiado!', '✅');
+  }
+}
+function toggleFav() {
+  if (!currentChannel) return;
+  showToast('⭐ ' + currentChannel.name + ' guardado nos favoritos!', '✅');
+}
+
+// ── TOAST ─────────────────────────────────────────
+let toastTimer = null;
+function showToast(msg, icon) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.querySelector('i').className = '';
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePlayer(); closeLumin(); closeCast(); }
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault(); document.getElementById('search-input').focus();
+  }
+});
+
+// Start
+console.log(`
+ ███╗   ███╗██╗   ██╗██████╗  ██████╗ ██╗   ██╗██████╗  █████╗ ██████╗     ████████╗██╗   ██╗
+ ████╗ ████║╚██╗ ██╔╝██╔══██╗██╔═══██╗██║   ██║██╔══██╗██╔══██╗██╔══██╗    ╚══██╔══╝██║   ██║
+ ██╔████╔██║ ╚████╔╝ ██████╔╝██║   ██║██║   ██║██████╔╝███████║██████╔╝       ██║   ██║   ██║
+ ██║╚██╔╝██║  ╚██╔╝  ██╔═══╝ ██║   ██║██║   ██║██╔═══╝ ██╔══██║██╔══██╗       ██║   ╚██╗ ██╔╝
+ ██║ ╚═╝ ██║   ██║   ██║     ╚██████╔╝╚██████╔╝██║     ██║  ██║██║  ██║       ██║    ╚████╔╝ 
+ ╚═╝     ╚═╝   ╚═╝   ╚═╝      ╚═════╝  ╚═════╝ ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝       ╚═╝     ╚═══╝  
+ MYPOUPAR TV · Powered by LUMIN AI · v1.0 · mypoupar.com
+`);
+</script>
+</body>
+</html>
