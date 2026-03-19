@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "name": "mypoupar-tv",
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=3600",
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Access-Control-Allow-Origin": "*"
+      },
+      "dest": "/$1"
+    },
+    { "src": "/", "dest": "/index.html" }
+  ]
+}
